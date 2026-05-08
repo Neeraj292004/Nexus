@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus | Project Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">NEXUS</div>
+        <div class="nav-links">
+            <span id="userRole" class="badge badge-progress"></span>
+            <span id="userName">Loading...</span>
+            <button id="logoutBtn" class="btn btn-secondary" style="padding: 0.5rem 1rem;">Logout</button>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="dashboard-stats" id="dashboardStats">
+            <!-- Stats populated by JS -->
+            <div class="card stat-card"><div class="stat-value">...</div><div class="stat-label">Total Tasks</div></div>
+            <div class="card stat-card"><div class="stat-value">...</div><div class="stat-label">In Progress</div></div>
+            <div class="card stat-card"><div class="stat-value">...</div><div class="stat-label">Completed</div></div>
+            <div class="card stat-card"><div class="stat-value">...</div><div class="stat-label">Overdue</div></div>
+        </div>
+
+        <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+            <!-- Projects Section -->
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>Projects</h2>
+                    <button id="createProjectBtn" class="btn btn-primary hidden">New Project</button>
+                </div>
+                <div id="projectsList" style="display: flex; flex-direction: column; gap: 1rem;">
+                    <!-- Projects populated by JS -->
+                </div>
+            </div>
+
+            <!-- Tasks Section -->
+            <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2>My Tasks</h2>
+                    <button id="createTaskBtn" class="btn btn-primary hidden">New Task</button>
+                </div>
+                <div id="tasksList" class="card" style="padding: 0;">
+                    <!-- Tasks populated by JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Project Modal -->
+    <div id="projectModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Project</h3>
+                <button class="close-btn" onclick="closeModal('projectModal')">&times;</button>
+            </div>
+            <form id="projectForm">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="projName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="projDesc" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Create Project</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Create New Task</h3>
+                <button class="close-btn" onclick="closeModal('taskModal')">&times;</button>
+            </div>
+            <form id="taskForm">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="taskTitle" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Project</label>
+                    <select id="taskProject" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Assign To</label>
+                    <select id="taskAssignee" class="form-control" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" id="taskDue" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%">Create Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
