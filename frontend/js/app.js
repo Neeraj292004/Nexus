@@ -1,4 +1,4 @@
-// Check auth on load
+
 document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('access_token');
     const userRole = localStorage.getItem('user_role');
@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'login.html';
         return;
     }
-
-    // Set user info
     document.getElementById('userName').textContent = username;
     document.getElementById('userRole').textContent = userRole;
 
@@ -17,14 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('createProjectBtn').classList.remove('hidden');
         document.getElementById('createTaskBtn').classList.remove('hidden');
     }
-
-    // Load Data
     loadDashboard();
     loadProjects();
     loadTasks();
     loadDropdowns();
-
-    // Event Listeners
     document.getElementById('logoutBtn').addEventListener('click', () => {
         localStorage.clear();
         window.location.href = 'login.html';
@@ -54,8 +48,6 @@ async function loadDashboard() {
         statCards[1].textContent = stats.in_progress_tasks;
         statCards[2].textContent = stats.completed_tasks;
         statCards[3].textContent = stats.overdue_tasks;
-        
-        // Add color dynamically
         if (stats.overdue_tasks > 0) statCards[3].style.color = 'var(--danger)';
     } catch (e) {
         console.error('Failed to load dashboard:', e);
@@ -66,7 +58,7 @@ async function loadProjects() {
     try {
         const projects = await ApiService.getProjects();
         const list = document.getElementById('projectsList');
-        
+
         if (projects.length === 0) {
             list.innerHTML = '<p style="color: var(--text-muted)">No projects found.</p>';
             return;
@@ -92,7 +84,7 @@ async function loadTasks() {
         const list = document.getElementById('tasksList');
         const userRole = localStorage.getItem('user_role');
         const currentUsername = localStorage.getItem('username');
-        
+
         if (tasks.length === 0) {
             list.innerHTML = '<p style="padding: 1.5rem; color: var(--text-muted)">No tasks found.</p>';
             return;
@@ -103,9 +95,9 @@ async function loadTasks() {
             if (t.status === 'In Progress') badgeClass = 'badge-progress';
             if (t.status === 'Completed') badgeClass = 'badge-completed';
 
-            // Only admin or assigned user can update status
+
             const canUpdate = userRole === 'Admin' || t.assigned_to_name === currentUsername;
-            
+
             let statusSelect = '';
             if (canUpdate) {
                 statusSelect = `
@@ -138,7 +130,7 @@ async function loadTasks() {
 
 async function loadDropdowns() {
     if (localStorage.getItem('user_role') !== 'Admin') return;
-    
+
     try {
         const [projects, users] = await Promise.all([
             ApiService.getProjects(),
@@ -161,7 +153,7 @@ async function handleProjectSubmit(e) {
         name: document.getElementById('projName').value,
         description: document.getElementById('projDesc').value
     };
-    
+
     try {
         await ApiService.createProject(data);
         closeModal('projectModal');
@@ -182,7 +174,7 @@ async function handleTaskSubmit(e) {
         due_date: document.getElementById('taskDue').value,
         status: 'Pending'
     };
-    
+
     try {
         await ApiService.createTask(data);
         closeModal('taskModal');

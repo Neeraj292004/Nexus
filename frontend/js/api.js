@@ -12,19 +12,19 @@ class ApiService {
     static async request(endpoint, options = {}) {
         const url = `${API_URL}${endpoint}`;
         const headers = this.getHeaders();
-        
+
         try {
             const response = await fetch(url, { ...options, headers });
-            
+
             if (response.status === 401 && !endpoint.includes('auth/')) {
-                // Token expired or invalid
+
                 localStorage.removeItem('access_token');
                 window.location.href = 'login.html';
                 return;
             }
 
             const data = response.status !== 204 ? await response.json() : null;
-            
+
             if (!response.ok) {
                 let errorMsg = data.detail || data.non_field_errors;
                 if (!errorMsg) {
@@ -32,7 +32,7 @@ class ApiService {
                 }
                 throw new Error(errorMsg);
             }
-            
+
             return data;
         } catch (error) {
             console.error('API Error:', error);
